@@ -13,6 +13,10 @@ const db = require('./config.connection')
 app.use(json())
 
 
+// Routes
+// Load the user routes and prefix them with /api
+app.use('/api', [user_routes, thought_routes])
+
 // Load Database and start server
 db.once('open', () => {
     app.listen(PORT, () => console.log('Server started on port %s', PORT))
