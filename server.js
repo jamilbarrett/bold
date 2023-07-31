@@ -7,15 +7,15 @@ const PORT = process.env.PORT || 3333
 const user_routes =require('./routes/user_routes')
 
 
-const db = require('./config.connection')
+const db = require('./config/connection')
 
 // Middleware
-app.use(json())
+app.use(express.json())
 
 
 // Routes
 // Load the user routes and prefix them with /api
-app.use('/api', [user_routes, thought_routes])
+app.use('/api', user_routes)
 
 // Load Database and start server
 db.once('open', () => {
