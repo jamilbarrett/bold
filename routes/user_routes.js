@@ -45,6 +45,15 @@ router.post('/user', async (req, res) => {
       res.status(500).json('Failed to create user')
     }
   });
+
+//   Update a user
+router.put('/user', async (req, res) => {
+    try {
+        const user = await User.findOneAndUpdate({
+            name: username
+        })
+    }
+})
   
 // Update a user by ID
 router.put('/user/:id', async (req, res) => {
