@@ -17,7 +17,8 @@ app.use(express.json())
 
 // Routes
 // Load the user routes and prefix them with /api
-app.use('/api', user_routes, thought_routes)
+app.use('/api', user_routes)
+app.use('/api', thought_routes)
 
 // Load Database and start server
 db.once('open', () => {

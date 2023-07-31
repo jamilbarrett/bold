@@ -1,18 +1,16 @@
-const express = require('express');
 const router = express.Router();
-const Thought = require('../model/Thought');
-const User = require('../model/User');
+const {User, Thought} = require('../model');
 
 // Get All Thoughts
 router.get('/api/thoughts', async (req, res) => {
   try {
-    const thoughts = await Thought.find();
-    res.status(200).json(thoughts);
-  } catch (error) {
-    console.error('Error fetching thoughts:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    const thoughts = await Thought.find({})
+
+    res.json(thoughts)
+  } catch (err) {
+    res.status(500).json({ message: 'Internal server error' })
   }
-});
+})
 
 // Get a single thought by ID
 router.get('/api/thoughts/:id', async (req, res) => {
@@ -31,10 +29,10 @@ router.get('/api/thoughts/:id', async (req, res) => {
 // Create New Thought
 router.post('/api/thoughts', async (req, res) => {
   try {
-    const { title, content, userId } = req.body;
+    const { thoughtText, username } = req.body;
 
     // Create the new thought
-    const newThought = new Thought({ title, content });
+    const newThought = new Thought({ thoughtText, username });
     await newThought.save();
 
     // Push the created thought's ID to the Users thoughts
@@ -56,16 +54,16 @@ router.post('/api/thoughts', async (req, res) => {
 //  Update a Thought
 router.put('/api/thoughts/:id', async (req, res) => {
     try {
-      const { id } = req.params;
-      const { title, content } = req.body;
+      const {thoughtId } = req.params;
+      const { thoughtText, username } = req.body;
   
-      const thought = await Thought.findById(id);
+      const thought = await Thought.findById(thoughtId);
       if (!thought) {
         return res.status(404).json({ message: 'Thought not found' });
       }
   
-      thought.title = title;
-      thought.content = content;
+      thought.thoughtText = thoughtText;
+      thought.username = username;
       await thought.save();
   
       res.status(200).json(thought);
@@ -78,9 +76,9 @@ router.put('/api/thoughts/:id', async (req, res) => {
   // Remove a Thought by ID
   router.delete('/api/thoughts/:id', async (req, res) => {
     try {
-      const { id } = req.params;
+      const { thoughtId } = req.params;
   
-      const thought = await Thought.findById(id);
+      const thought = await Thought.findById(thoughtId);
       if (!thought) {
         return res.status(404).json({ message: 'Thought not found' });
       }
@@ -89,7 +87,7 @@ router.put('/api/thoughts/:id', async (req, res) => {
       const userId = thought.userId; // Assuming you have a userId field in the Thought model
       const user = await User.findById(userId);
       if (user) {
-        user.thoughts.pull(id);
+        user.thoughts.pull(thoughtId);
         await user.save();
       }
   
@@ -102,4 +100,5 @@ router.put('/api/thoughts/:id', async (req, res) => {
     }
   });
 
+  // Export router
 module.exports = router;
