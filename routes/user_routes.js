@@ -87,7 +87,7 @@ router.delete('/user/:id', async (req, res) => {
 })
 
 // Add a Friend
-router.post('/user/:userId/friends/:friendId', async (req, res) => {
+router.post('/user/:userId/:friendId', async (req, res) => {
     try {
         const { userId, friendId } = req.params
         const user = await User.findById(userId)
@@ -109,7 +109,7 @@ router.post('/user/:userId/friends/:friendId', async (req, res) => {
 
 
 //   Remove a Friend
-router.delete('/user/:userId/friends/:friendId', async (req, res) => {
+router.delete('/user/:userId/:friendId', async (req, res) => {
     try {
         const { userId, friendId } = req.params
         const user = await User.findById(userId)
