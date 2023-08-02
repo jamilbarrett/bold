@@ -105,7 +105,7 @@ router.post('/user/:userId/:friendId', async (req, res) => {
         console.error('Error adding friend:', error)
         res.status(500).json({ message: 'Could Not Add Friend' })
     }
-});
+})
 
 
 //   Remove a Friend
@@ -129,13 +129,5 @@ router.delete('/user/:userId/:friendId', async (req, res) => {
     }
 })
 
-
-
 //   Export router
-module.exports = router;
-
-
-
-
-
-
+module.exports = router
